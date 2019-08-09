@@ -6,10 +6,12 @@
 package dao;
 
 import conexion.Conexion;
-//import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import modelo.CategoriaBean;
@@ -139,8 +141,18 @@ public class TramoDao {
 
     public static void main(String[] args) {
 
-        int id_tramo = 1;
-//         Date fecha = 2015 - 9 - 8;
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatoHora = new SimpleDateFormat("hh:mm aaa");
+            // fecha_devolucion = formato.format(new Date());
+                
+    int id_tramo = 0;
+    String fecha = formatoFecha.format(new Date());;
+    String hora = formatoHora.format(new Date());
+    
+    
+        System.out.println("La fecha es : "+fecha);
+        System.out.println("La hora es : "+hora);
+    CategoriaBean id_categoria;
 
-    }
+}
 }

@@ -142,7 +142,7 @@ public class EscalaDao {
 //   esdao.actualizar(esbean, tbean);
 //       esdao.consultarAll();
 //        esdao.consultarById(id_escala);
-        esdao.eliminar(id_escala);
+      //  esdao.eliminar(id_escala);
 
     }
 }

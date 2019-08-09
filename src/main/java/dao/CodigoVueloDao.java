@@ -35,7 +35,7 @@ public class CodigoVueloDao {
             ps.setInt(2, codvueb.getCodigo_vuelo());
             ps.setInt(3, clib.getId_cliente());
             ps.executeUpdate();
-            System.out.println("INSERTAR CORRECTO!!!!!!!!");
+            System.out.println("INSERTAR CORRECTO!!!!!!!! codigo vuelo dao");
             return true;
         } catch (SQLException e) {
             System.out.println("ERROR AL INSERTAR!!!!" + e);
@@ -61,23 +61,32 @@ public class CodigoVueloDao {
         }
 
     }
-
+    
     public List<CodigoVueloBean> consultarAll() {
-        String sql = "select * from codigo_vuelo";
+        /*
+        linea 1 = traeme toda la informacion que quiero
+        linea 2 = que sea de la tabla tal. (aca va la tabla principal)
+        */
+        String sql = "select codigo_vuelo.*, cliente.* "
+                + "from codigo_vuelo "
+                + "inner join cliente on codigo_vuelo.id_cliente = cliente.id_cliente";
         try {
             PreparedStatement ps = conn.conectar().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             List<CodigoVueloBean> lista = new LinkedList<>();
             CodigoVueloBean codvueb;
+            ClienteBean clientebean;
             while (rs.next()) {
-
-                ClienteBean clientebean;
+                //--------- Extraccion de los datos de la tabla codigo_vuelo
                 codvueb = new CodigoVueloBean(rs.getInt("id_codigo"));
                 codvueb.setCodigo_vuelo(rs.getInt("codigo_vuelo"));
+                //-------- Extraccion de los datos de la tabla Cliente
                 clientebean = new ClienteBean(rs.getInt("id_cliente"));
+                clientebean.setNombre(rs.getString("cliente.nombre"));
+                //---------- llenado del objeto cliente
                 codvueb.setId_cliente(clientebean);
+                // llenado de la lista
                 lista.add(codvueb);
-
             }
             System.out.println("CONSULTAR TODO CORRECTO.........."+lista);
             return lista;
@@ -89,23 +98,29 @@ public class CodigoVueloDao {
     }
 
     public List<CodigoVueloBean> consultarById(int id_codigo) {
-        String sql = "select * from codigo_vuelo where id_codigo=?";
+        String sql = "select codigo_vuelo.*, cliente.* "
+                + "from codigo_vuelo "
+                + "inner join cliente on codigo_vuelo.id_cliente = cliente.id_cliente where id_codigo=?";
         try {
             PreparedStatement ps = conn.conectar().prepareStatement(sql);
             ps.setInt(1, id_codigo);
             ResultSet rs = ps.executeQuery();
             List<CodigoVueloBean> lista = new LinkedList<>();
             CodigoVueloBean codvueb;
+            ClienteBean clientebean;
             while (rs.next()) {
-
-                ClienteBean clientebean;
+                //--------- Extraccion de los datos de la tabla codigo_vuelo
                 codvueb = new CodigoVueloBean(rs.getInt("id_codigo"));
                 codvueb.setCodigo_vuelo(rs.getInt("codigo_vuelo"));
+                //-------- Extraccion de los datos de la tabla Cliente
                 clientebean = new ClienteBean(rs.getInt("id_cliente"));
+                clientebean.setNombre(rs.getString("cliente.nombre"));
+                //---------- llenado del objeto cliente
                 codvueb.setId_cliente(clientebean);
+                // llenado de la lista
                 lista.add(codvueb);
-
             }
+            
             System.out.println("CONSULTAR POR ID CORRECTO.........."+lista);
             return lista;
         } catch (SQLException e) {
@@ -148,9 +163,9 @@ public class CodigoVueloDao {
         clibean.setId_cliente(id_cliente);
 
         //-----------------------------------
-//        cvdao.insertar(cvbean, clibean); inserta correcto
+        //System.out.println(cvdao.insertar(cvbean, clibean)); //
 //        cvdao.actualizar(cvbean, clibean); actualiza correcto
-//        cvdao.consultarAll();
+         System.out.println(cvdao.consultarAll()); ;
 //       cvdao.consultarById(id_codig);
 //        cvdao.eliminar(id_codig); elimina correcto
 
